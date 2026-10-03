@@ -4,10 +4,9 @@ import { isAdminAuthenticated } from "@/lib/admin/auth";
 import { insertLocalProducts } from "@/lib/products-local";
 import { isSupabaseUnreachable } from "@/lib/supabase/errors";
 import { getServiceClient } from "@/lib/supabase/server";
+import { normalizeCategory } from "@/lib/categories";
 
 export const runtime = "nodejs";
-
-const categories = ["Suplementos", "Vitaminas", "Cosmética Natural", "Proteínas"];
 
 export async function POST(request: NextRequest) {
   if (!isAdminAuthenticated(request)) {
@@ -15,6 +14,7 @@ export async function POST(request: NextRequest) {
   }
 
   const body = await request.json().catch(() => null);
+  const category = normalizeCategory(body?.category);
   if (
     !body ||
     typeof body.name !== "string" ||
@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
     body.price < 0 ||
     typeof body.stock !== "number" ||
     body.stock < 0 ||
-    !categories.includes(body.category)
+    !category
   ) {
     return NextResponse.json(
       { ok: false, message: "Datos de producto inválidos." },
@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
 
   const payload = {
     name: body.name,
-    category: body.category,
+    category,
     price: body.price,
     stock: body.stock,
     description: body.description ?? "",

@@ -4,7 +4,9 @@ export type Category =
   | "Suplementos"
   | "Vitaminas"
   | "Cosmética Natural"
-  | "Proteínas";
+  | "Proteínas"
+  // Categorías creadas desde administración
+  | (string & {});
 
 export type StockStatus = "Disponible" | "Bajo Stock" | "Agotado";
 

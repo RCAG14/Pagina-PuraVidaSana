@@ -7,6 +7,7 @@ import { ProductCard } from "@/components/catalog/ProductCard";
 import { ProductFilters } from "@/components/catalog/ProductFilters";
 import { Pagination } from "@/components/ui/Pagination";
 import { useStore } from "@/store/useStore";
+import { getAllCategories } from "@/lib/categories";
 
 const PAGE_SIZE = 12;
 
@@ -15,6 +16,7 @@ export function CatalogView() {
   const searchQuery = useStore((s) => s.searchQuery);
   const setSearchQuery = useStore((s) => s.setSearchQuery);
   const searchParams = useSearchParams();
+  const categories = useMemo(() => getAllCategories(products), [products]);
 
   const [category, setCategory] = useState<Category | "Todas">("Todas");
   const [search, setSearch] = useState(searchQuery);
@@ -27,12 +29,7 @@ export function CatalogView() {
       setSearch(q);
       setSearchQuery(q);
     }
-    if (
-      cat &&
-      ["Suplementos", "Vitaminas", "Cosmética Natural", "Proteínas"].includes(
-        cat
-      )
-    ) {
+    if (cat) {
       setCategory(cat as Category);
     }
   }, [searchParams, setSearchQuery]);
@@ -56,6 +53,7 @@ export function CatalogView() {
   return (
     <div className="space-y-6">
       <ProductFilters
+        categories={categories}
         category={category}
         onCategoryChange={(c) => {
           setCategory(c);

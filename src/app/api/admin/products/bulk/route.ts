@@ -4,10 +4,9 @@ import { isAdminAuthenticated } from "@/lib/admin/auth";
 import { insertLocalProducts } from "@/lib/products-local";
 import { isSupabaseUnreachable, SUPABASE_DOWN_MESSAGE } from "@/lib/supabase/errors";
 import { getServiceClient } from "@/lib/supabase/server";
+import { normalizeCategory } from "@/lib/categories";
 
 export const runtime = "nodejs";
-
-const categories = ["Suplementos", "Vitaminas", "Cosmética Natural", "Proteínas"];
 
 interface BulkRow {
   name?: unknown;
@@ -41,10 +40,11 @@ function validateRow(row: BulkRow, index: number): ValidateResult {
   if (typeof row.name !== "string" || !row.name.trim()) {
     return { ok: false, error: `Fila ${index + 1}: falta el nombre.` };
   }
-  if (!categories.includes(row.category as string)) {
+  const category = normalizeCategory(row.category);
+  if (!category) {
     return {
       ok: false,
-      error: `Fila ${index + 1}: categoría inválida ("${row.category}"). Debe ser una de: ${categories.join(", ")}.`,
+      error: `Fila ${index + 1}: categoría inválida ("${row.category ?? ""}").`,
     };
   }
   const price = typeof row.price === "number" ? row.price : Number(row.price);
@@ -60,7 +60,7 @@ function validateRow(row: BulkRow, index: number): ValidateResult {
     ok: true,
     product: {
       name: (row.name as string).trim(),
-      category: row.category as string,
+      category,
       price,
       stock,
       description: typeof row.description === "string" ? row.description : "",

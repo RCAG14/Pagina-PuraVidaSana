@@ -2,15 +2,8 @@
 
 import type { Category } from "@/types";
 
-const categories: Array<Category | "Todas"> = [
-  "Todas",
-  "Suplementos",
-  "Vitaminas",
-  "Cosmética Natural",
-  "Proteínas",
-];
-
 interface ProductFiltersProps {
+  categories: Category[];
   category: Category | "Todas";
   onCategoryChange: (c: Category | "Todas") => void;
   search: string;
@@ -18,6 +11,7 @@ interface ProductFiltersProps {
 }
 
 export function ProductFilters({
+  categories,
   category,
   onCategoryChange,
   search,
@@ -49,7 +43,7 @@ export function ProductFilters({
             }
             className="w-full rounded-xl border border-forest/15 bg-white/70 px-3.5 py-3 text-base outline-none focus:border-leaf"
           >
-            {categories.map((c) => (
+            {(["Todas", ...categories] as const).map((c) => (
               <option key={c} value={c}>
                 {c}
               </option>

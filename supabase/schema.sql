@@ -6,7 +6,7 @@ create sequence if not exists products_id_seq start 1;
 create table if not exists products (
   id text primary key default ('PV-' || lpad(nextval('products_id_seq')::text, 3, '0')),
   name text not null,
-  category text not null check (category in ('Suplementos','Vitaminas','Cosmética Natural','Proteínas')),
+  category text not null check (length(trim(category)) > 0),
   price numeric(10,2) not null check (price >= 0),
   stock integer not null default 0 check (stock >= 0),
   description text not null default '',
@@ -18,6 +18,11 @@ create table if not exists products (
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
+
+-- Permite categorías personalizadas creadas desde administración.
+-- (Si la tabla ya existía con la lista fija de categorías, esto la actualiza.)
+alter table products drop constraint if exists products_category_check;
+alter table products add constraint products_category_check check (length(trim(category)) > 0);
 
 create or replace function set_updated_at() returns trigger as $$
 begin

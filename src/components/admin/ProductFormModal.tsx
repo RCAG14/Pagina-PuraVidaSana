@@ -1,17 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { Category, Product } from "@/types";
 import { Modal } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
 import { useStore } from "@/store/useStore";
+import {
+  getAllCategories,
+  MAX_CATEGORY_LENGTH,
+  normalizeCategory,
+} from "@/lib/categories";
 
-const categories: Category[] = [
-  "Suplementos",
-  "Vitaminas",
-  "Cosmética Natural",
-  "Proteínas",
-];
+const NEW_CATEGORY = "__nueva__";
 
 interface ProductFormModalProps {
   open: boolean;
@@ -39,7 +39,11 @@ export function ProductFormModal({
 }: ProductFormModalProps) {
   const addProduct = useStore((s) => s.addProduct);
   const updateProduct = useStore((s) => s.updateProduct);
+  const products = useStore((s) => s.products);
+  const categories = useMemo(() => getAllCategories(products), [products]);
   const [form, setForm] = useState(empty);
+  const [creatingCategory, setCreatingCategory] = useState(false);
+  const [newCategory, setNewCategory] = useState("");
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -60,6 +64,8 @@ export function ProductFormModal({
     } else if (open && mode === "create") {
       setForm(empty);
     }
+    setCreatingCategory(false);
+    setNewCategory("");
     setUploadError(null);
     setSubmitError(null);
   }, [mode, product, open]);
@@ -90,9 +96,22 @@ export function ProductFormModal({
     e.preventDefault();
     if (!form.name.trim() || !form.image) return;
 
+    let category: Category = form.category;
+    if (creatingCategory) {
+      const clean = normalizeCategory(newCategory);
+      if (!clean) {
+        setSubmitError("Escribe un nombre válido para la nueva categoría.");
+        return;
+      }
+      // Reutiliza una categoría existente si coincide sin importar mayúsculas
+      category =
+        categories.find((c) => c.toLowerCase() === clean.toLowerCase()) ??
+        clean;
+    }
+
     const payload = {
       name: form.name,
-      category: form.category,
+      category,
       price: product?.price ?? 0,
       stock: product?.stock ?? 1,
       description: form.description,
@@ -160,13 +179,18 @@ export function ProductFormModal({
               Categoría
             </span>
             <select
-              value={form.category}
-              onChange={(e) =>
+              value={creatingCategory ? NEW_CATEGORY : form.category}
+              onChange={(e) => {
+                if (e.target.value === NEW_CATEGORY) {
+                  setCreatingCategory(true);
+                  return;
+                }
+                setCreatingCategory(false);
                 setForm((f) => ({
                   ...f,
                   category: e.target.value as Category,
-                }))
-              }
+                }));
+              }}
               className="w-full rounded-xl border border-forest/15 bg-surface px-3 py-2.5 text-sm outline-none focus:border-leaf"
             >
               {categories.map((c) => (
@@ -174,7 +198,19 @@ export function ProductFormModal({
                   {c}
                 </option>
               ))}
+              <option value={NEW_CATEGORY}>+ Nueva categoría...</option>
             </select>
+            {creatingCategory && (
+              <input
+                autoFocus
+                required
+                value={newCategory}
+                maxLength={MAX_CATEGORY_LENGTH}
+                onChange={(e) => setNewCategory(e.target.value)}
+                placeholder="Nombre de la nueva categoría"
+                className="mt-2 w-full rounded-xl border border-forest/15 bg-surface px-3 py-2.5 text-sm outline-none focus:border-leaf"
+              />
+            )}
           </label>
 
           <label className="block">
