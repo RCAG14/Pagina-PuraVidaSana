@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Save, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { activeFontFamily, customFontFaceCss, fontsFor } from "@/lib/fonts";
+import { normalizeImageUrl } from "@/lib/imageUrl";
 import { defaultSiteContent, mergeSiteContent } from "@/lib/site-content";
 import { useStore } from "@/store/useStore";
 import type { AboutPillar, CustomFont, SiteContent, TypographyContent } from "@/types";
@@ -97,6 +98,7 @@ function ImagePicker({
           <input
             value={value.startsWith("data:") ? "" : value}
             onChange={(e) => onUrlChange(e.target.value)}
+            onBlur={() => !value.startsWith("data:") && onUrlChange(normalizeImageUrl(value))}
             placeholder={
               value.startsWith("data:") ? "Imagen guardada en este navegador" : placeholder
             }

@@ -5,6 +5,7 @@ import { insertLocalProducts } from "@/lib/products-local";
 import { isSupabaseUnreachable, SUPABASE_DOWN_MESSAGE } from "@/lib/supabase/errors";
 import { getServiceClient } from "@/lib/supabase/server";
 import { normalizeCategory } from "@/lib/categories";
+import { normalizeImageUrl } from "@/lib/imageUrl";
 
 export const runtime = "nodejs";
 
@@ -64,9 +65,11 @@ function validateRow(row: BulkRow, index: number): ValidateResult {
       price,
       stock,
       description: typeof row.description === "string" ? row.description : "",
-      image: typeof row.image === "string" ? row.image : "",
+      image: typeof row.image === "string" ? normalizeImageUrl(row.image) : "",
       featured: !!row.featured,
-      images: Array.isArray(row.images) ? row.images : [],
+      images: Array.isArray(row.images)
+        ? row.images.filter((u): u is string => typeof u === "string").map(normalizeImageUrl).filter(Boolean)
+        : [],
       benefits: Array.isArray(row.benefits) ? row.benefits : [],
       tags: Array.isArray(row.tags) ? row.tags : [],
     },

@@ -10,6 +10,7 @@ import {
   MAX_CATEGORY_LENGTH,
   normalizeCategory,
 } from "@/lib/categories";
+import { normalizeImageUrl } from "@/lib/imageUrl";
 
 const NEW_CATEGORY = "__nueva__";
 
@@ -94,7 +95,12 @@ export function ProductFormModal({
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.name.trim() || !form.image) return;
+    const image = normalizeImageUrl(form.image);
+    if (!form.name.trim()) return;
+    if (!image) {
+      setSubmitError("Agrega una imagen principal (archivo o URL).");
+      return;
+    }
 
     let category: Category = form.category;
     if (creatingCategory) {
@@ -115,7 +121,7 @@ export function ProductFormModal({
       price: product?.price ?? 0,
       stock: product?.stock ?? 1,
       description: form.description,
-      image: form.image,
+      image,
       featured: form.featured,
       tags: form.tags
         .split(",")
@@ -127,7 +133,7 @@ export function ProductFormModal({
         .filter(Boolean),
       images: form.images
         .split(",")
-        .map((u) => u.trim())
+        .map(normalizeImageUrl)
         .filter(Boolean),
     };
 
@@ -213,11 +219,11 @@ export function ProductFormModal({
             )}
           </label>
 
-          <label className="block">
+          <div className="block">
             <span className="mb-1.5 block text-xs font-semibold uppercase text-forest/70">
               Imagen principal
             </span>
-            <div className="flex items-center gap-3">
+            <div className="flex items-start gap-3">
               {form.image && (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
@@ -226,21 +232,40 @@ export function ProductFormModal({
                   className="h-14 w-14 shrink-0 rounded-lg border border-forest/10 object-cover"
                 />
               )}
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleFileChange}
-                disabled={uploading}
-                className="w-full rounded-xl border border-forest/15 bg-surface px-3 py-2.5 text-sm outline-none file:mr-3 file:rounded-lg file:border-0 file:bg-leaf/15 file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-forest focus:border-leaf"
-              />
+              <div className="min-w-0 flex-1 space-y-2">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  disabled={uploading}
+                  className="w-full rounded-xl border border-forest/15 bg-surface px-3 py-2.5 text-sm outline-none file:mr-3 file:rounded-lg file:border-0 file:bg-leaf/15 file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-forest focus:border-leaf"
+                />
+                <input
+                  type="url"
+                  value={form.image}
+                  onChange={(e) =>
+                    setForm((f) => ({ ...f, image: e.target.value }))
+                  }
+                  onBlur={() =>
+                    setForm((f) => ({ ...f, image: normalizeImageUrl(f.image) }))
+                  }
+                  disabled={uploading}
+                  placeholder="O pega una URL (ej. enlace de Google Drive)"
+                  className="w-full rounded-xl border border-forest/15 bg-surface px-3 py-2.5 text-sm outline-none focus:border-leaf"
+                />
+              </div>
             </div>
+            <p className="mt-1 text-xs text-ink/50">
+              Sube un archivo desde tu equipo o pega una URL. En Google Drive,
+              comparte la imagen como &quot;Cualquier persona con el enlace&quot;.
+            </p>
             {uploading && (
               <p className="mt-1 text-xs text-ink/50">Subiendo imagen...</p>
             )}
             {uploadError && (
               <p className="mt-1 text-xs text-red-600">{uploadError}</p>
             )}
-          </label>
+          </div>
 
           <label className="block">
             <span className="mb-1.5 block text-xs font-semibold uppercase text-forest/70">
