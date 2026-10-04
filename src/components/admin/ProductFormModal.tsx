@@ -223,13 +223,13 @@ export function ProductFormModal({
             <span className="mb-1.5 block text-xs font-semibold uppercase text-forest/70">
               Imagen principal
             </span>
-            <div className="flex items-start gap-3">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-start">
               {form.image && (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
                   src={form.image}
                   alt=""
-                  className="h-14 w-14 shrink-0 rounded-lg border border-forest/10 object-cover"
+                  className="h-40 w-40 shrink-0 rounded-xl border border-forest/10 object-cover"
                 />
               )}
               <div className="min-w-0 flex-1 space-y-2">

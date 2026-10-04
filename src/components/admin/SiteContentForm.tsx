@@ -406,7 +406,7 @@ function SiteContentFormFields() {
           onFileChange={handleFile("logo")}
           uploading={uploading === "logo"}
           error={uploadError?.target === "logo" ? uploadError.message : undefined}
-          previewClassName="h-20 w-20 object-contain bg-surface p-1"
+          previewClassName="h-36 w-36 object-contain bg-surface p-2"
         />
         <div className="flex flex-wrap gap-2">
           <button
@@ -502,7 +502,7 @@ function SiteContentFormFields() {
             onFileChange={handleFile("background")}
             uploading={uploading === "background"}
             error={uploadError?.target === "background" ? uploadError.message : undefined}
-            previewClassName="h-24 w-40 object-cover"
+            previewClassName="h-44 w-full object-cover sm:w-80"
           />
         </div>
       </section>
