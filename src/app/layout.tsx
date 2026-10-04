@@ -97,7 +97,7 @@ const courgette = Courgette({
 });
 
 export const metadata: Metadata = {
-  title: "Casa de Pura Vida Sana | Salud integral en La Paz",
+  title: "Pura Vida Sana | Salud integral en La Paz",
   description:
     "Tienda de suplementos, vitaminas y productos naturales en La Paz, Bolivia. Pide online y coordina el pago por WhatsApp.",
 };

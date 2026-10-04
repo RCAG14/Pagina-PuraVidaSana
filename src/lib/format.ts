@@ -2,7 +2,7 @@ import type { ShippingInfo, StockStatus } from "@/types";
 
 export function productWhatsAppUrl(phone: string, productName: string): string {
   const text = encodeURIComponent(
-    `Hola Casa de Pura Vida Sana, me interesa "${productName}". ¿Me pueden dar más información?`
+    `Hola Pura Vida Sana, me interesa "${productName}". ¿Me pueden dar más información?`
   );
   return `https://wa.me/${phone}?text=${text}`;
 }
@@ -56,7 +56,7 @@ export function buildWhatsAppOrderUrl(
       : [`*Total: ${formatBs(total)}*`];
 
   const message = [
-    "Hola, quiero realizar el siguiente pedido a Casa de Pura Vida Sana.",
+    "Hola, quiero realizar el siguiente pedido a Pura Vida Sana.",
     `*Orden:* ${orderId}`,
     `*Cliente:* ${shipping.name}`,
     `*Teléfono:* ${shipping.phone}`,

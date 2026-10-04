@@ -178,7 +178,7 @@ export function WheelModal() {
               className="mt-0.5 h-4 w-4 accent-leaf"
             />
             <span className="text-sm text-ink/65">
-              Acepto recibir promociones y anuncios de Casa de Pura Vida Sana.
+              Acepto recibir promociones y anuncios de Pura Vida Sana.
               Ver{" "}
               <Link
                 href="/terminos"

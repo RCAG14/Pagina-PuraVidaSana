@@ -6,7 +6,7 @@ import { useStore } from "@/store/useStore";
 export function WhatsAppButton() {
   const storeInfo = useStore((s) => s.storeInfo);
   const message = encodeURIComponent(
-    "Hola Casa de Pura Vida Sana, quisiera más información sobre sus productos."
+    "Hola Pura Vida Sana, quisiera más información sobre sus productos."
   );
   const href = `https://wa.me/${storeInfo.whatsapp}?text=${message}`;
 

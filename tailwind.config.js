@@ -1,5 +1,5 @@
 /**
- * Paleta corporativa Casa de Pura Vida Sana
+ * Paleta corporativa Pura Vida Sana
  * Tailwind v4 usa @theme en globals.css; este archivo documenta tokens.
  *
  * Verde Principal (Bosque): #184D28

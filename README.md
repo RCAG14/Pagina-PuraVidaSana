@@ -1,4 +1,4 @@
-# Casa de Pura Vida Sana
+# Pura Vida Sana
 
 Tienda en línea de suplementos, vitaminas y productos naturales en La Paz, Bolivia.
 

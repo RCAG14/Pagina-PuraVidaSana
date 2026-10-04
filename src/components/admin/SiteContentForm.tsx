@@ -322,7 +322,7 @@ function SiteContentFormFields() {
                     fontFamily: `${activeFontFamily(role, selected, form.customFonts)}, sans-serif`,
                   }}
                 >
-                  {role === "script" ? "Pura Vida" : "Casa de Pura Vida"}
+                  {role === "script" ? "Pura Vida" : "Pura Vida Sana"}
                 </p>
               </label>
             );
@@ -430,7 +430,7 @@ function SiteContentFormFields() {
           />
         </div>
         <p className="text-xs text-ink/50">
-          El logo original ya trae escrito “Casa de Pura Vida Sana”. Si subes
+          El logo original ya trae escrito “Pura Vida Sana”. Si subes
           un logo sin texto, escribe aquí el nombre para que aparezca al lado.
         </p>
 

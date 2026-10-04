@@ -21,7 +21,7 @@ export function AdminHeader() {
         <Logo size="sm" onDark />
         <div className="min-w-0 leading-tight">
           <p className="truncate text-[11px] uppercase tracking-wide text-white/55">
-            Casa de Pura Vida Sana
+            Pura Vida Sana
           </p>
           <p className="font-display truncate text-lg font-bold">
             Panel de administración

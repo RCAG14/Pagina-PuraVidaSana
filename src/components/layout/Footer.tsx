@@ -163,7 +163,7 @@ export function Footer() {
       </div>
 
       <div className="mt-6 border-t border-white/10 px-4 py-3 text-center text-sm text-white/45 md:px-6">
-        © {new Date().getFullYear()} Casa de Pura Vida Sana ·{" "}
+        © {new Date().getFullYear()} Pura Vida Sana ·{" "}
         <Link href="/terminos" className="pop-glow hover:text-leaf">
           Términos y Privacidad
         </Link>{" "}

@@ -40,7 +40,7 @@ export function Logo({ size = "md", onDark = false }: LogoProps) {
           <Image
             key={logoUrl}
             src={logoUrl}
-            alt={storeName || "Casa de Pura Vida Sana"}
+            alt={storeName || "Pura Vida Sana"}
             width={width}
             height={height}
             className="block object-contain"

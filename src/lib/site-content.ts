@@ -19,7 +19,7 @@ const LEGACY_HERO_TITLE = "Salud integral natural en el corazón de La Paz";
 const LEGACY = {
   heroSubtitle:
     "Productos naturales, suplementos y vitaminas para acompañarte en tu bienestar.",
-  aboutTitle: "Casa de Pura Vida Sana",
+  aboutTitle: "Pura Vida Sana",
   aboutIntro:
     "Nacimos en La Paz con una idea simple: acercar bienestar natural confiable a familias bolivianas, con asesoría cercana y productos seleccionados para la vida en altura.",
   benefitTitle: "Productos 100% Naturales",
